@@ -1,0 +1,182 @@
+LESSON 3 – HW3: RM11 WHOLE-GENOME SEQUENCING QC AND PREPROCESSING
+Final answers based on SRR1569760_sub paired-end FASTQ files, FastQC HTML reports, and the command outputs.
+
+DATA FILES
+SRR1569760_sub_1.fastq.gz (R1)
+SRR1569760_sub_2.fastq.gz (R2)
+NexteraPE-PE.fa (adapter reference)
+Estimated genome size: 12,000,000 bp.
+
+Q1. WHAT IS THE DIFFERENCE BETWEEN THE HEADER OF THE FIRST READ IN R1 AND R2?
+
+Commands:
+zcat SRR1569760_sub_1.fastq.gz | head -n 4
+zcat SRR1569760_sub_2.fastq.gz | head -n 4
+
+Observed first-read headers:
+R1: @SRR1569760.2151832 D4LHBFN1:249:D292YACXX:8:1207:15788:92582/1
+R2: @SRR1569760.2151832 D4LHBFN1:249:D292YACXX:8:1207:15788:92582/2
+
+Answer:
+The two headers have identical identifiers except for the final suffix: /1 in R1 and /2 in R2. These indicate the first and second reads of the same paired-end DNA fragment. Both FASTQ files have the expected four-line record structure (header, sequence, '+', and quality scores).
+
+Q2. READ LENGTH, NUMBER OF READS, AND INITIAL SEQUENCING DEPTH
+
+Commands to inspect the first read's length:
+echo -n "$(zcat SRR1569760_sub_1.fastq.gz | sed -n '2p')" | wc -c
+echo -n "$(zcat SRR1569760_sub_2.fastq.gz | sed -n '2p')" | wc -c
+
+Commands to count FASTQ lines:
+zcat SRR1569760_sub_1.fastq.gz | wc -l
+zcat SRR1569760_sub_2.fastq.gz | wc -l
+
+Observed results:
+Read length: 101 bp in both files.
+Lines per FASTQ file: 7,128,720.
+Reads per FASTQ file: 7,128,720 / 4 = 1,782,180.
+Read pairs: 1,782,180.
+
+Coverage calculation (paired-end):
+Depth = (read pairs x 2 x read length) / genome size
+      = (1,782,180 x 2 x 101) / 12,000,000
+      = 30.00003x, approximately 30x.
+
+Answer:
+Each file contains 1,782,180 reads of 101 bp. With a 12 Mb genome and paired-end sequencing, the estimated sequencing depth before preprocessing is approximately 30x.
+
+Q3. FASTQC: SUSPICIOUS PLOT AND R1 VS R2 DIFFERENCES
+
+Commands:
+mkdir -p fastqc_results
+fastqc --outdir fastqc_results -t 2 SRR1569760_sub_1.fastq.gz SRR1569760_sub_2.fastq.gz
+
+Note: The installed FastQC version uses --outdir rather than -o.
+
+Observed FastQC status in BOTH raw R1 and raw R2 reports:
+Per base sequence quality: PASS
+Per base sequence content: FAIL
+Adapter Content: WARNING
+Sequence Length Distribution: PASS
+Per sequence GC content: PASS
+Per sequence quality scores: PASS
+Other reported modules also passed.
+
+Answer:
+The suspicious plot is "Per base sequence content" (FAIL in both R1 and R2). 
+The proportions of A, C, G and T are strongly biased near the beginnings of the reads. 
+This may reflect sequence-composition bias introduced during Nextera library preparation rather than low base-call quality. 
+Additionally, "Adapter Content" raises a WARNING in both raw files, suggesting some adapter contamination to address during preprocessing.
+
+The overall FastQC status patterns of R1 and R2 are similar. 
+Both pass the per-base quality test, although R2 has somewhat lower quality toward the 3' end compared with R1.
+The main anomalies occur in both files.
+
+
+Q4. TRIMMOMATIC COMMAND, PARAMETER CHOICES, AND CLEANUP EVALUATION
+
+Command actually used:
+trimmomatic PE \
+  -threads 2 \
+  -phred33 \
+  SRR1569760_sub_1.fastq.gz \
+  SRR1569760_sub_2.fastq.gz \
+  SRR1569760_1P.fastq.gz \
+  SRR1569760_1U.fastq.gz \
+  SRR1569760_2P.fastq.gz \
+  SRR1569760_2U.fastq.gz \
+  ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 \
+  SLIDINGWINDOW:4:20 \
+  MINLEN:36
+
+Parameter rationale:
+- PE: process paired-end reads, retaining paired and unpaired output separately.
+- -threads 2: use two processing threads.
+- -phred33: use the Phred+33 quality-score encoding.
+- ILLUMINACLIP:NexteraPE-PE.fa:2:30:10: detect and remove Nextera adapter sequences. The numeric settings specify seed mismatches (2), palindrome clipping threshold (30), and simple clipping threshold (10).
+- SLIDINGWINDOW:4:20: trim a read once the mean quality within a sliding four-base window falls below Phred 20.
+- MINLEN:36: discard trimmed reads shorter than 36 bases.
+
+Actual Trimmomatic output:
+Input Read Pairs:       1,782,180
+Both Surviving:         1,573,637 (88.30%)
+Forward Only Surviving:   186,890 (10.49%)
+Reverse Only Surviving:    12,664 ( 0.71%)
+Dropped:                    8,989 ( 0.50%)
+TrimmomaticPE: Completed successfully.
+
+Recheck command:
+mkdir -p fastqc_trimmed
+fastqc --outdir fastqc_trimmed -t 2 SRR1569760_1P.fastq.gz SRR1569760_2P.fastq.gz
+
+Observed FastQC comparison for both mates:
+                                   RAW R1/R2       CLEANED 1P/2P
+Per base sequence quality         PASS             PASS
+Adapter Content                   WARNING          PASS
+Per base sequence content         FAIL             FAIL
+Sequence Length Distribution      PASS             WARNING
+Per sequence GC content           PASS             PASS
+Overrepresented sequences         PASS             PASS
+
+Cleaned read statistics from FastQC:
+1P: 1,573,637 reads, read length range 36-101 bp, mean length ~99 bp, 38% GC.
+2P: 1,573,637 reads, read length range 36-101 bp, mean length ~99 bp, 38% GC.
+
+Answer:
+The cleanup was satisfactory for downstream analysis. 
+88.30% of the input pairs survived as intact paired reads. 
+The adapter-content warning disappeared in both cleaned files (WARNING to PASS), 
+while per-base sequencing quality remained PASS. 
+Sequence Length Distribution now gives a WARNING because trimming created reads of variable length (36-101 bp), which is expected. 
+The Per base sequence content FAIL persists, consistent with an underlying library-preparation-related nucleotide bias that quality/adapter trimming does not necessarily remove. 
+On these results, there is no clear need to rerun Trimmomatic with more aggressive settings solely to eliminate that composition warning.
+
+Q5. SEQUENCING DEPTH AFTER CLEANUP
+
+Command actually used:
+bases1=$(zcat SRR1569760_1P.fastq.gz | awk 'NR%4==2 {sum+=length($0)} END {print sum+0}')
+bases2=$(zcat SRR1569760_2P.fastq.gz | awk 'NR%4==2 {sum+=length($0)} END {print sum+0}')
+awk -v a="$bases1" -v b="$bases2" 'BEGIN {printf "Depth after trimming: %.2fx\n", (a+b)/12000000}'
+
+Observed output:
+Depth after trimming: 26.10x
+
+Answer:
+To account for variable read lengths after trimming, the total number of bases in the two surviving paired-read files (1P and 2P) was calculated and divided by 12,000,000 bp. The resulting sequencing depth is 26.10x. Compared with the original ~30x depth, coverage decreased modestly as low-quality sequences, adapters, and unpaired/discarded reads were excluded. This 26.10x value refers to the cleaned paired reads only; surviving unpaired reads were not included in the calculation.
+
+BONUS (OPTIONAL): FASTUNIQ DUPLICATE REMOVAL
+
+Commands executed:
+gunzip -c SRR1569760_1P.fastq.gz > SRR1569760_1P.fastq
+gunzip -c SRR1569760_2P.fastq.gz > SRR1569760_2P.fastq
+printf "SRR1569760_1P.fastq\nSRR1569760_2P.fastq\n" > fastuniq_files
+cat fastuniq_files
+fastuniq -i fastuniq_files -t q -o SRR1569760_1P_dedup.fastq -p SRR1569760_2P_dedup.fastq
+awk 'END {print NR/4}' SRR1569760_1P_dedup.fastq
+
+Actual result:
+Pairs before FastUniq: 1,573,637.
+Pairs after FastUniq:  1,528,872.
+Pairs removed:             44,765 (about 2.84% of input cleaned pairs).
+
+Interpretation:
+FastUniq identified and removed 44,765 duplicate read pairs based on sequence identity. Identical read pairs can arise from PCR amplification, but sequence identity alone does not conclusively prove a PCR duplicate.
+
+BONUS (OPTIONAL): FLASH READ MERGING
+
+Command executed:
+flash SRR1569760_1P.fastq.gz SRR1569760_2P.fastq.gz -o SRR1569760_FLASH
+
+Actual FLASH results:
+Total input pairs:       1,573,637
+Successfully combined:     450,330 (28.62%)
+Not combined:            1,123,307 (71.38%)
+
+FLASH issued a WARNING that an unexpectedly high proportion of combined pairs (34.52%) had overlap longer than the default maximum overlap of 65 bp. It recommended increasing the --max-overlap (-M) parameter. Therefore, the 28.62% merged proportion is the observed result with the default settings, not necessarily the maximum achievable merging rate. This bonus result is not required for the main assignment.
+
+SUMMARY
+Q1: Header suffix /1 versus /2, correctly paired.
+Q2: 101-bp reads; 1,782,180 reads in each raw file; ~30x raw depth.
+Q3: Per base sequence content FAIL in both R1 and R2; Adapter Content WARNING in both raw files; R2 somewhat lower 3' quality.
+Q4: Trimmomatic retained 88.30% intact pairs; Adapter Content became PASS; variable length warning is expected; cleaned data satisfactory.
+Q5: Post-trimming sequencing depth of cleaned paired reads = 26.10x.
+Bonus: FastUniq removed 44,765 duplicate pairs; FLASH combined 450,330 pairs (28.62%) with a max-overlap warning.

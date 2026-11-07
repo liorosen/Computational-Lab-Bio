@@ -1,0 +1,11 @@
+
+
+Building a new DB, current time: 10/25/2026 09:43:44
+New DB name:   /workspaces/Computational-Lab-Bio/e_coli_proteins.fasta
+New DB title:  e_coli_proteins.fasta
+Sequence type: Protein
+Keep MBits: T
+Maximum file size: 1000000000B
+Adding sequences from FASTA; added 4391 sequences in 0.075907 seconds.
+
+
