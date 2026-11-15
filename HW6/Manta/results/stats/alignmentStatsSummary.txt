@@ -1,0 +1,18 @@
+group:	/workspaces/Computational-Lab-Bio/HW6/SRR1569760_vs_S288C.HQ.sort.bam
+fragment length observations:	499757
+fragment length quantiles:
+0.01	97
+0.05	112
+0.1	129
+0.25	174
+0.5	254
+0.75	369
+0.9	503
+0.95	596
+0.99	774
+Total sampled reads:	1430801
+Total sampled paired reads:	1430801
+Total sampled unpaired reads:	0
+Total sampled paired reads with low MAPQ:	0
+Total sampled high-confidence read pairs passing all filters:	500317
+

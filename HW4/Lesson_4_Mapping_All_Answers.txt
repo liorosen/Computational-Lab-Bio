@@ -1,0 +1,178 @@
+LESSON 4 – MAPPING
+Exercise Answers – RM11 vs. S288C
+
+Data analyzed:
+- RM11_genes.fasta
+- S288C_reference_sequence_R64-2-1_20150113.fsa
+- EDV08516_blast.txt (BLASTN report)
+- RM11_vs_S288C.tsv (BLAST tabular output)
+
+============================================================
+Q1. How many records are in each FASTA file? What do they represent?
+============================================================
+
+Answer:
+RM11_genes.fasta contains 5,377 FASTA records, each representing a nucleotide sequence of an RM11 gene.
+
+S288C_reference_sequence_R64-2-1_20150113.fsa contains 17 FASTA records, representing the 16 nuclear chromosomes of the S288C reference strain and its mitochondrial genome.
+
+Commands:
+grep -c '^>' RM11_genes.fasta
+grep -c '^>' S288C_reference_sequence_R64-2-1_20150113.fsa
+
+============================================================
+PREPARATION. Build the BLAST database and search for EDV08516
+============================================================
+
+Because both the RM11 genes and the S288C reference genome contain nucleotide sequences, the appropriate BLAST program is blastn.
+
+Create the nucleotide BLAST database:
+makeblastdb -in S288C_reference_sequence_R64-2-1_20150113.fsa -dbtype nucl -parse_seqids
+
+Extract the first FASTA record (EDV08516):
+awk '/^>/{if(n++) exit} {print}' RM11_genes.fasta > EDV08516.fasta
+
+Search the gene against the reference genome:
+blastn -query EDV08516.fasta -db S288C_reference_sequence_R64-2-1_20150113.fsa -out EDV08516_blast.txt
+
+============================================================
+Q2. Was the gene found? How many hits? Which is the best?
+What is its genomic location? Is the hit reliable?
+============================================================
+
+Answer:
+Yes, EDV08516 (S-adenosylmethionine synthetase 1) was found in the S288C genome. BLAST reported 2 significant hits, on chromosomes XII and IV.
+
+Best hit:
+- Chromosome: ChrXII
+- Genomic coordinates: 515,262–516,410 (1-based, inclusive)
+- Strand: plus
+- Query length / alignment length: 1,149 / 1,149 bp (100% query coverage)
+- Identities: 1,144 / 1,149 (99.565%)
+- Mismatches: 5
+- Gaps: 0
+- Bit score: 2,095
+- E-value: 0.0
+
+Second hit:
+- Chromosome: ChrIV
+- Genomic coordinates: 1,453,324–1,454,447 (reverse strand)
+- Identities: 943 / 1,125 (83.822%)
+- Gaps: 3 / 1,125
+- Bit score: 1,066
+- E-value: 0.0
+
+Conclusion:
+The chromosome XII hit is highly reliable. It spans the entire query sequence, has almost 100% identity with only five mismatches and no gaps,
+and has a substantially higher bit score than the chromosome IV hit. 
+An E-value of 0.0 denotes an extremely significant match (rounded to zero by BLAST). T
+he chromosome IV hit is also statistically significant, but is a poorer sequence match.
+
+============================================================
+Q3. BLAST all RM11 genes against the S288C genome
+(The exercise does not label this question explicitly.)
+============================================================
+
+Command:
+blastn -query RM11_genes.fasta -db S288C_reference_sequence_R64-2-1_20150113.fsa -evalue 1e-10 -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend qlen sstart send evalue bitscore' -out RM11_vs_S288C.tsv
+
+The chosen E-value cutoff (1e-10) helps exclude weak alignments. The tabular output makes it easier to count hits and inspect alignment quality.
+
+Columns in this custom tabular format:
+1  qseqid    Query gene ID
+2  sseqid    Reference chromosome ID
+3  pident    Percentage sequence identity
+4  length    Alignment length
+5  mismatch  Number of mismatches
+6  gapopen   Number of gap openings
+7  qstart    Start position in the query
+8  qend      End position in the query
+9  qlen      Total query sequence length
+10 sstart    Start position on the reference
+11 send      End position on the reference
+12 evalue    Expect value
+13 bitscore  Bit score
+
+For example, the EDV08516 result on ChrXII in the tabular output agrees with its individual BLAST report.
+
+============================================================
+Q4. How many RM11 genes were found in S288C, and why might
+one gene appear multiple times?
+============================================================
+
+Answer:
+5,363 of the 5,377 RM11 genes have at least one BLAST hit in the S288C reference genome, based on the supplied tabular BLAST output. Therefore, 14 genes have no reported hits under the search settings used.
+
+One query gene may appear on several BLAST result rows because it aligns to duplicated genes, related gene-family members, or repeated sequences in multiple genomic locations. A single gene can also produce multiple local alignment segments. Consequently, the number of BLAST rows is not the number of uniquely mapped genes.
+
+Count distinct mapped query genes:
+cut -f1 RM11_vs_S288C.tsv | sort -u | wc -l
+
+Result: 5363
+
+Create a sorted list of all query gene IDs:
+grep '^>' RM11_genes.fasta | cut -d' ' -f1 | sed 's/^>//' | sort -u > all_genes.txt
+
+Create a sorted list of mapped gene IDs:
+cut -f1 RM11_vs_S288C.tsv | sort -u > mapped_genes.txt
+
+Write the genes absent from BLAST output to a file:
+comm -23 all_genes.txt mapped_genes.txt > unmapped_genes.txt
+
+Count them:
+wc -l unmapped_genes.txt
+
+Result: 14
+
+Unmapped gene IDs:
+ENA|EDV08404|EDV08404.1
+ENA|EDV08447|EDV08447.1
+ENA|EDV09647|EDV09647.1
+ENA|EDV10953|EDV10953.1
+ENA|EDV10954|EDV10954.1
+ENA|EDV10955|EDV10955.1
+ENA|EDV10956|EDV10956.1
+ENA|EDV10957|EDV10957.1
+ENA|EDV11338|EDV11338.1
+ENA|EDV12484|EDV12484.1
+ENA|EDV12485|EDV12485.1
+ENA|EDV12486|EDV12486.1
+ENA|EDV12487|EDV12487.1
+ENA|EDV12565|EDV12565.1
+
+Note: A gene absent from the BLAST results is not necessarily biologically absent from S288C. It means the supplied search did not report a hit meeting its reporting criteria.
+
+============================================================
+Q4 (final question). How many mapped genes had a perfect match
+(no mismatches and no gaps)?
+============================================================
+
+Answer:
+1,190 unique RM11 genes have at least one perfect, full-length alignment to the S288C genome in the supplied BLAST results.
+
+For this count, a perfect match was defined as:
+- 100% nucleotide identity (pident = 100)
+- 0 mismatches
+- 0 gap openings
+- The aligned sequence covers the entire gene (alignment length = query length, qstart = 1, qend = query length)
+
+Command (using the custom 13-column output above):
+awk '$3 == 100 && $5 == 0 && $6 == 0 && $4 == $9 && $7 == 1 && $8 == $9 {print $1}' RM11_vs_S288C.tsv | sort -u | wc -l
+
+Result: 1190
+
+Important distinction: If 'perfect match' refers only to a gap-free, mismatch-free local alignment, without requiring coverage of the complete gene, the count is 1,322 genes. Here, 1,190 is reported because it requires a perfect match along the entire gene sequence.
+
+============================================================
+SUMMARY
+============================================================
+RM11 FASTA records:                 5377
+S288C FASTA records:                  17
+EDV08516 significant BLAST hits:       2
+EDV08516 best hit:                  ChrXII, 515262–516410, plus strand
+Unique RM11 genes with BLAST hits:   5363
+RM11 genes without reported hits:      14
+Unique genes with full-length
+perfect matches:                    1190
+
+All numeric results above were checked against the uploaded FASTA files and supplied BLAST outputs.

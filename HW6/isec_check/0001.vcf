@@ -1,0 +1,151 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##FILTER=<ID=LowQual,Description="Low quality">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
+##GATKCommandLine=<ID=HaplotypeCaller,CommandLine="HaplotypeCaller --output ChrII.gatk.vcf --intervals ChrII --input SRR1569760_vs_S288C.HQ.sort.RG.bam --reference S288C_reference_sequence_R64-2-1_20150113.fasta --use-posteriors-to-calculate-qual false --dont-use-dragstr-priors false --use-new-qual-calculator true --annotate-with-num-discovered-alleles false --heterozygosity 0.001 --indel-heterozygosity 1.25E-4 --heterozygosity-stdev 0.01 --standard-min-confidence-threshold-for-calling 30.0 --max-alternate-alleles 6 --max-genotype-count 1024 --sample-ploidy 2 --num-reference-samples-if-no-call 0 --genotype-assignment-method USE_PLS_TO_ASSIGN --contamination-fraction-to-filter 0.0 --output-mode EMIT_VARIANTS_ONLY --all-site-pls false --flow-likelihood-parallel-threads 0 --flow-likelihood-optimized-comp false --trim-to-haplotype true --exact-matching false --flow-use-t0-tag false --flow-remove-non-single-base-pair-indels false --flow-remove-one-zero-probs false --flow-quantization-bins 121 --flow-fill-empty-bins-value 0.001 --flow-symmetric-indel-probs false --flow-report-insertion-or-deletion false --flow-disallow-probs-larger-than-call false --flow-lump-probs false --flow-retain-max-n-probs-base-format false --flow-probability-scaling-factor 10 --flow-order-cycle-length 4 --keep-boundary-flows false --gvcf-gq-bands 1 --gvcf-gq-bands 2 --gvcf-gq-bands 3 --gvcf-gq-bands 4 --gvcf-gq-bands 5 --gvcf-gq-bands 6 --gvcf-gq-bands 7 --gvcf-gq-bands 8 --gvcf-gq-bands 9 --gvcf-gq-bands 10 --gvcf-gq-bands 11 --gvcf-gq-bands 12 --gvcf-gq-bands 13 --gvcf-gq-bands 14 --gvcf-gq-bands 15 --gvcf-gq-bands 16 --gvcf-gq-bands 17 --gvcf-gq-bands 18 --gvcf-gq-bands 19 --gvcf-gq-bands 20 --gvcf-gq-bands 21 --gvcf-gq-bands 22 --gvcf-gq-bands 23 --gvcf-gq-bands 24 --gvcf-gq-bands 25 --gvcf-gq-bands 26 --gvcf-gq-bands 27 --gvcf-gq-bands 28 --gvcf-gq-bands 29 --gvcf-gq-bands 30 --gvcf-gq-bands 31 --gvcf-gq-bands 32 --gvcf-gq-bands 33 --gvcf-gq-bands 34 --gvcf-gq-bands 35 --gvcf-gq-bands 36 --gvcf-gq-bands 37 --gvcf-gq-bands 38 --gvcf-gq-bands 39 --gvcf-gq-bands 40 --gvcf-gq-bands 41 --gvcf-gq-bands 42 --gvcf-gq-bands 43 --gvcf-gq-bands 44 --gvcf-gq-bands 45 --gvcf-gq-bands 46 --gvcf-gq-bands 47 --gvcf-gq-bands 48 --gvcf-gq-bands 49 --gvcf-gq-bands 50 --gvcf-gq-bands 51 --gvcf-gq-bands 52 --gvcf-gq-bands 53 --gvcf-gq-bands 54 --gvcf-gq-bands 55 --gvcf-gq-bands 56 --gvcf-gq-bands 57 --gvcf-gq-bands 58 --gvcf-gq-bands 59 --gvcf-gq-bands 60 --gvcf-gq-bands 70 --gvcf-gq-bands 80 --gvcf-gq-bands 90 --gvcf-gq-bands 99 --floor-blocks false --indel-size-to-eliminate-in-ref-model 10 --disable-optimizations false --dragen-mode false --dragen-378-concordance-mode false --flow-mode NONE --apply-bqd false --apply-frd false --disable-spanning-event-genotyping false --transform-dragen-mapping-quality false --mapping-quality-threshold-for-genotyping 20 --max-effective-depth-adjustment-for-frd 0 --just-determine-active-regions false --dont-genotype false --do-not-run-physical-phasing false --do-not-correct-overlapping-quality false --use-filtered-reads-for-annotations false --use-flow-aligner-for-stepwise-hc-filtering false --adaptive-pruning false --do-not-recover-dangling-branches false --recover-dangling-heads false --kmer-size 10 --kmer-size 25 --dont-increase-kmer-sizes-for-cycles false --allow-non-unique-kmers-in-ref false --num-pruning-samples 1 --min-dangling-branch-length 4 --recover-all-dangling-branches false --max-num-haplotypes-in-population 128 --min-pruning 2 --adaptive-pruning-initial-error-rate 0.001 --pruning-lod-threshold 2.302585092994046 --pruning-seeding-lod-threshold 9.210340371976184 --max-unpruned-variants 100 --linked-de-bruijn-graph false --disable-artificial-haplotype-recovery false --enable-legacy-graph-cycle-detection false --debug-assembly false --debug-graph-transformations false --capture-assembly-failure-bam false --num-matching-bases-in-dangling-end-to-recover -1 --error-correction-log-odds -Infinity --error-correct-reads false --kmer-length-for-read-error-correction 25 --min-observations-for-kmer-to-be-solid 20 --likelihood-calculation-engine PairHMM --base-quality-score-threshold 18 --dragstr-het-hom-ratio 2 --dont-use-dragstr-pair-hmm-scores false --pair-hmm-gap-continuation-penalty 10 --expected-mismatch-rate-for-read-disqualification 0.02 --pair-hmm-implementation FASTEST_AVAILABLE --pcr-indel-model CONSERVATIVE --phred-scaled-global-read-mismapping-rate 45 --disable-symmetric-hmm-normalizing false --disable-cap-base-qualities-to-map-quality false --enable-dynamic-read-disqualification-for-genotyping false --dynamic-read-disqualification-threshold 1.0 --native-pair-hmm-threads 4 --native-pair-hmm-use-double-precision false --flow-hmm-engine-min-indel-adjust 6 --flow-hmm-engine-flat-insertion-penatly 45 --flow-hmm-engine-flat-deletion-penatly 45 --pileup-detection false --use-pdhmm false --use-pdhmm-overlap-optimization false --make-determined-haps-from-pd-code false --print-pileupcalling-status false --fallback-gga-if-pdhmm-fails true --pileup-detection-enable-indel-pileup-calling false --pileup-detection-active-region-phred-threshold 0.0 --num-artificial-haplotypes-to-add-per-allele 5 --artifical-haplotype-filtering-kmer-size 10 --pileup-detection-snp-alt-threshold 0.1 --pileup-detection-indel-alt-threshold 0.1 --pileup-detection-absolute-alt-depth 0.0 --pileup-detection-snp-adjacent-to-assembled-indel-range 5 --pileup-detection-snp-basequality-filter 12 --pileup-detection-bad-read-tolerance 0.0 --pileup-detection-proper-pair-read-badness true --pileup-detection-edit-distance-read-badness-threshold 0.08 --pileup-detection-chimeric-read-badness true --pileup-detection-template-mean-badness-threshold 0.0 --pileup-detection-template-std-badness-threshold 0.0 --pileup-detection-filter-assembly-alt-bad-read-tolerance 0.0 --pileup-detection-edit-distance-read-badness-for-assembly-filtering-threshold 0.12 --bam-writer-type CALLED_HAPLOTYPES --dont-use-soft-clipped-bases false --override-fragment-softclip-check false --min-base-quality-score 10 --smith-waterman FASTEST_AVAILABLE --emit-ref-confidence NONE --max-mnp-distance 0 --force-call-filtered-alleles false --reference-model-deletion-quality 30 --soft-clip-low-quality-ends false --allele-informative-reads-overlap-margin 2 --smith-waterman-dangling-end-match-value 25 --smith-waterman-dangling-end-mismatch-penalty -50 --smith-waterman-dangling-end-gap-open-penalty -110 --smith-waterman-dangling-end-gap-extend-penalty -6 --smith-waterman-haplotype-to-reference-match-value 200 --smith-waterman-haplotype-to-reference-mismatch-penalty -150 --smith-waterman-haplotype-to-reference-gap-open-penalty -260 --smith-waterman-haplotype-to-reference-gap-extend-penalty -11 --smith-waterman-read-to-haplotype-match-value 10 --smith-waterman-read-to-haplotype-mismatch-penalty -15 --smith-waterman-read-to-haplotype-gap-open-penalty -30 --smith-waterman-read-to-haplotype-gap-extend-penalty -5 --flow-assembly-collapse-hmer-size 0 --flow-assembly-collapse-partial-mode false --flow-filter-alleles false --flow-filter-alleles-qual-threshold 30.0 --flow-filter-alleles-sor-threshold 3.0 --flow-filter-lone-alleles false --flow-filter-alleles-debug-graphs false --min-assembly-region-size 50 --max-assembly-region-size 300 --active-probability-threshold 0.002 --max-prob-propagation-distance 50 --force-active false --assembly-region-padding 100 --padding-around-indels 75 --padding-around-snps 20 --padding-around-strs 75 --max-extension-into-assembly-region-padding-legacy 25 --max-reads-per-alignment-start 50 --enable-legacy-assembly-region-trimming false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --create-output-variant-index true --create-output-variant-md5 false --max-variants-per-shard 0 --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false --minimum-mapping-quality 20 --disable-tool-default-annotations false --enable-all-annotations false --allow-old-rms-mapping-quality-annotation-data false",Version="4.6.2.0",Date="November 13, 2026, 8:58:30?AM UTC">
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes, for each ALT allele, in the same order as listed">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency, for each ALT allele, in the same order as listed">
+##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles in called genotypes">
+##INFO=<ID=BaseQRankSum,Number=1,Type=Float,Description="Z-score from Wilcoxon rank sum test of Alt Vs. Ref base qualities">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth; some reads may have been filtered">
+##INFO=<ID=ExcessHet,Number=1,Type=Float,Description="Phred-scaled p-value for exact test of excess heterozygosity">
+##INFO=<ID=FS,Number=1,Type=Float,Description="Phred-scaled p-value using Fisher's exact test to detect strand bias">
+##INFO=<ID=InbreedingCoeff,Number=1,Type=Float,Description="Inbreeding coefficient as estimated from the genotype likelihoods per-sample when compared against the Hardy-Weinberg expectation">
+##INFO=<ID=MLEAC,Number=A,Type=Integer,Description="Maximum likelihood expectation (MLE) for the allele counts (not necessarily the same as the AC), for each ALT allele, in the same order as listed">
+##INFO=<ID=MLEAF,Number=A,Type=Float,Description="Maximum likelihood expectation (MLE) for the allele frequency (not necessarily the same as the AF), for each ALT allele, in the same order as listed">
+##INFO=<ID=MQ,Number=1,Type=Float,Description="RMS Mapping Quality">
+##INFO=<ID=MQRankSum,Number=1,Type=Float,Description="Z-score From Wilcoxon rank sum test of Alt vs. Ref read mapping qualities">
+##INFO=<ID=QD,Number=1,Type=Float,Description="Variant Confidence/Quality by Depth">
+##INFO=<ID=ReadPosRankSum,Number=1,Type=Float,Description="Z-score from Wilcoxon rank sum test of Alt vs. Ref read position bias">
+##INFO=<ID=SOR,Number=1,Type=Float,Description="Symmetric Odds Ratio of 2x2 contingency table to detect strand bias">
+##contig=<ID=ChrI,length=230218>
+##contig=<ID=ChrII,length=813184>
+##contig=<ID=ChrIII,length=316620>
+##contig=<ID=ChrIV,length=1531933>
+##contig=<ID=ChrV,length=576874>
+##contig=<ID=ChrVI,length=270161>
+##contig=<ID=ChrVII,length=1090940>
+##contig=<ID=ChrVIII,length=562643>
+##contig=<ID=ChrIX,length=439888>
+##contig=<ID=ChrX,length=745751>
+##contig=<ID=ChrXI,length=666816>
+##contig=<ID=ChrXII,length=1078177>
+##contig=<ID=ChrXIII,length=924431>
+##contig=<ID=ChrXIV,length=784333>
+##contig=<ID=ChrXV,length=1091291>
+##contig=<ID=ChrXVI,length=948066>
+##contig=<ID=mt,length=85779>
+##source=HaplotypeCaller
+##bcftools_viewVersion=1.25+htslib-1.24
+##bcftools_viewCommand=view -i 'QUAL>=30 & INFO/DP>=10' -o ChrII.gatk.HQ.vcf ChrII.gatk.vcf; Date=Fri Nov 13 08:59:14 2026
+##bcftools_normVersion=1.25+htslib-1.24
+##bcftools_normCommand=norm -f S288C_reference_sequence_R64-2-1_20150113.fasta -m -any -Oz -o gatk.norm.vcf.gz ChrII.gatk.HQ.vcf; Date=Fri Nov 13 08:59:20 2026
+##bcftools_isecVersion=1.25+htslib-1.24
+##bcftools_isecCommand=isec -p isec_check bcf.norm.vcf.gz gatk.norm.vcf.gz; Date=Fri Nov 13 09:39:39 2026
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SRR1569760
+ChrII	1640	.	TCAGTGGTAGTCGCACTAGTCCTGACGTTGATGCTAG	T	326.6	.	AC=2;AF=1;AN=2;DP=14;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=40.45;QD=32.66;SOR=4.174	GT:AD:DP:GQ:PL	1/1:0,10:10:33:402,33,0
+ChrII	1691	.	TTAGTGTTGGAGTCGGTACTTTCGGTGGTAGTAGCAC	T	328.92	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=37.73;QD=32.89;SOR=4.174	GT:AD:DP:GQ:PL	1/1:0,10:10:31:397,31,0
+ChrII	1745	.	CTTT	C	268.99	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=37.73;QD=25.36;SOR=4.174	GT:AD:DP:GQ:PL	1/1:0,7:7:22:283,22,0
+ChrII	1749	.	CAGTGGTAGTAGCATTAGTGCTAGAGTTGATACT	C	228.97	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=38.17;QD=28.73;SOR=3.912	GT:AD:DP:GQ:PL	1/1:0,6:6:19:243,19,0
+ChrII	6814	.	G	A	444.06	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=40.05;QD=25;SOR=1.802	GT:AD:DP:GQ:PL	1/1:0,11:11:33:458,33,0
+ChrII	6843	.	C	T	178.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=0.56;DP=13;ExcessHet=0;FS=2.48;MLEAC=1;MLEAF=0.5;MQ=41.9;MQRankSum=0.197;QD=13.74;ReadPosRankSum=0.654;SOR=1.981	GT:AD:DP:GQ:PL	0/1:8,5:13:99:186,0,321
+ChrII	6844	.	G	GTCATAA	178.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=1.111;DP=13;ExcessHet=0;FS=2.48;MLEAC=1;MLEAF=0.5;MQ=41.9;MQRankSum=0.197;QD=13.74;ReadPosRankSum=0.504;SOR=1.981	GT:AD:DP:GQ:PL	0/1:8,5:13:99:186,0,321
+ChrII	6847	.	ATATCC	A	178.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=0.236;DP=13;ExcessHet=0;FS=2.48;MLEAC=1;MLEAF=0.5;MQ=41.9;MQRankSum=0.197;QD=13.74;ReadPosRankSum=-1.454;SOR=1.981	GT:AD:DP:GQ:PL	0/1:8,5:13:99:186,0,321
+ChrII	6854	.	A	G	178.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=0.541;DP=13;ExcessHet=0;FS=2.48;MLEAC=1;MLEAF=0.5;MQ=41.9;MQRankSum=0.197;QD=13.74;ReadPosRankSum=-2.83;SOR=1.981	GT:AD:DP:GQ:PL	0/1:8,5:13:99:186,0,321
+ChrII	35660	.	T	C	461.06	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.94;SOR=2.494	GT:AD:DP:GQ:PL	1/1:0,11:11:33:475,33,0
+ChrII	35711	.	C	G	526.06	.	AC=2;AF=1;AN=2;DP=12;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.41;SOR=1.445	GT:AD:DP:GQ:PL	1/1:0,12:12:36:540,36,0
+ChrII	35712	.	T	C	526.06	.	AC=2;AF=1;AN=2;DP=12;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.11;SOR=1.445	GT:AD:DP:GQ:PL	1/1:0,12:12:36:540,36,0
+ChrII	35718	.	C	T	481.06	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=34.66;SOR=1.27	GT:AD:DP:GQ:PL	1/1:0,11:11:33:495,33,0
+ChrII	68282	.	GTTATTATTATTATTATTA	G	76.7	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=60;QD=29.95;SOR=0.693	GT:AD:DP:GQ:PL	1/1:0,2:2:7:89,7,0
+ChrII	75925	.	AC	A	153.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=2.785;DP=33;ExcessHet=0;FS=11.137;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=4.65;ReadPosRankSum=-1.194;SOR=3.235	GT:AD:DP:GQ:PL	0/1:27,6:33:99:161,0,1085
+ChrII	117298	.	A	G	1049.06	.	AC=2;AF=1;AN=2;DP=24;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.07;SOR=0.859	GT:AD:DP:GQ:PL	1/1:0,24:24:72:1063,72,0
+ChrII	118370	.	A	G	382.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=27.21;SOR=1.402	GT:AD:DP:GQ:PL	1/1:0,9:9:27:396,27,0
+ChrII	119244	.	CA	C	1056.03	.	AC=2;AF=1;AN=2;DP=25;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.3;SOR=1.609	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1070,75,0
+ChrII	119246	.	CA	C	1056.03	.	AC=2;AF=1;AN=2;DP=26;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.93;SOR=1.609	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1070,75,0
+ChrII	122587	.	A	AT	74.73	.	AC=1;AF=0.5;AN=2;BaseQRankSum=0.674;DP=10;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=10.68;ReadPosRankSum=0;SOR=0.527	GT:AD:DP:GQ:PL	0/1:1,6:7:5:82,0,5
+ChrII	165675	.	A	G	562.06	.	AC=2;AF=1;AN=2;DP=13;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=25.27;SOR=1.609	GT:AD:DP:GQ:PL	1/1:0,13:13:39:576,39,0
+ChrII	165680	.	A	C	622.06	.	AC=2;AF=1;AN=2;DP=15;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=35.69;SOR=1.911	GT:AD:DP:GQ:PL	1/1:0,15:15:45:636,45,0
+ChrII	166027	.	T	C	648.06	.	AC=2;AF=1;AN=2;DP=15;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.2;SOR=1.112	GT:AD:DP:GQ:PL	1/1:0,15:15:45:662,45,0
+ChrII	174714	.	A	AATTTT	509.02	.	AC=2;AF=1;AN=2;BaseQRankSum=0.965;DP=16;ExcessHet=0;FS=5.441;MLEAC=2;MLEAF=1;MQ=60;MQRankSum=0;QD=30.16;ReadPosRankSum=1.5;SOR=2.056	GT:AD:DP:GQ:PL	1/1:1,13:14:30:523,30,0
+ChrII	174876	.	ATT	A	1066.03	.	AC=2;AF=1;AN=2;DP=24;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.72;SOR=1.051	GT:AD:DP:GQ:PL	1/1:0,24:24:72:1080,72,0
+ChrII	174882	.	T	TAGC	1105.03	.	AC=2;AF=1;AN=2;DP=25;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=33.6;SOR=1.136	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1119,75,0
+ChrII	191086	.	AAATT	A	969.03	.	AC=2;AF=1;AN=2;DP=22;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=32.97;SOR=0.693	GT:AD:DP:GQ:PL	1/1:0,22:22:66:983,66,0
+ChrII	191091	.	G	GGTGC	931.03	.	AC=2;AF=1;AN=2;DP=22;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.53;SOR=0.784	GT:AD:DP:GQ:PL	1/1:0,21:21:63:945,63,0
+ChrII	191124	.	CATT	C	1111.03	.	AC=2;AF=1;AN=2;DP=26;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.61;SOR=0.77	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1125,75,0
+ChrII	191128	.	GTTT	G	1111.03	.	AC=2;AF=1;AN=2;DP=25;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.4;SOR=0.77	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1125,75,0
+ChrII	197598	.	T	C	1061.06	.	AC=2;AF=1;AN=2;DP=24;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=58.32;QD=27.65;SOR=1.27	GT:AD:DP:GQ:PL	1/1:0,24:24:72:1075,72,0
+ChrII	197606	.	TA	T	604.03	.	AC=2;AF=1;AN=2;DP=25;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=57.7;QD=31.79;SOR=1.292	GT:AD:DP:GQ:PL	1/1:0,19:19:57:618,57,0
+ChrII	197612	.	TAAAAATC	T	662.03	.	AC=2;AF=1;AN=2;DP=21;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=57.26;QD=31.21;SOR=0.818	GT:AD:DP:GQ:PL	1/1:0,15:15:45:676,45,0
+ChrII	197699	.	C	CGATCT	949.02	.	AC=1;AF=0.5;AN=2;DP=23;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=48.23;QD=28.83;SOR=1.179	GT:AD:DP:GQ:PL	1/0:0,3:23:66:966,840,831
+ChrII	197699	.	C	CTTAA	949.02	.	AC=1;AF=0.5;AN=2;DP=23;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=48.23;QD=28.83;SOR=1.179	GT:AD:DP:GQ:PL	0/1:0,20:23:66:966,126,66
+ChrII	197704	.	TTCTTG	T	58.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=-1.779;DP=23;ExcessHet=0;FS=2.696;MLEAC=1;MLEAF=0.5;MQ=48.23;MQRankSum=1.098;QD=2.55;ReadPosRankSum=1.831;SOR=0.946	GT:AD:DP:GQ:PL	0/1:20,3:23:66:66,0,831
+ChrII	197705	.	T	*	828.58	.	AC=1;AF=0.5;AN=2;DP=23;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=48.23;QD=28.99;SOR=1.179	GT:AD:DP:GQ:PL	1/0:0,3:23:66:966,840,831
+ChrII	197705	.	T	A	828.58	.	AC=1;AF=0.5;AN=2;DP=23;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=48.23;QD=28.99;SOR=1.179	GT:AD:DP:GQ:PL	0/1:0,20:23:66:966,126,66
+ChrII	197708	.	TGGAAG	*	828.55	.	AC=1;AF=0.5;AN=2;DP=23;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=48.23;QD=28.17;SOR=1.179	GT:AD:DP:GQ:PL	1/0:0,3:23:66:966,840,831
+ChrII	197708	.	TGGAAG	T	828.55	.	AC=1;AF=0.5;AN=2;DP=23;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=48.23;QD=28.17;SOR=1.179	GT:AD:DP:GQ:PL	0/1:0,20:23:66:966,126,66
+ChrII	197711	.	A	AT	74.97	.	AC=1;AF=0.5;AN=2;DP=21;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=47.96;QD=3.57;SOR=0.99	GT:AD:DP:GQ:PL	1/0:0,3:21:72:882,756,747
+ChrII	197711	.	A	*	74.97	.	AC=1;AF=0.5;AN=2;DP=21;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=47.96;QD=3.57;SOR=0.99	GT:AD:DP:GQ:PL	0/1:0,18:21:72:882,126,72
+ChrII	197713	.	G	T	75.01	.	AC=1;AF=0.5;AN=2;DP=21;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=47.96;QD=3.57;SOR=0.99	GT:AD:DP:GQ:PL	1/0:0,3:21:72:882,756,747
+ChrII	197713	.	G	*	75.01	.	AC=1;AF=0.5;AN=2;DP=21;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=47.96;QD=3.57;SOR=0.99	GT:AD:DP:GQ:PL	0/1:0,18:21:72:882,126,72
+ChrII	197714	.	TG	T	739.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=2.293;DP=21;ExcessHet=0;FS=2.57;MLEAC=1;MLEAF=0.5;MQ=47.96;MQRankSum=-1.227;QD=29.04;ReadPosRankSum=-0.353;SOR=0.991	GT:AD:DP:GQ:PL	0/1:3,18:21:72:747,0,72
+ChrII	197720	.	A	AAAG	739.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=2.457;DP=22;ExcessHet=0;FS=2.57;MLEAC=1;MLEAF=0.5;MQ=47.63;MQRankSum=-1.227;QD=33.75;ReadPosRankSum=-0.101;SOR=0.991	GT:AD:DP:GQ:PL	0/1:3,18:21:72:747,0,72
+ChrII	218039	.	A	G	364.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=33.93;SOR=1.402	GT:AD:DP:GQ:PL	1/1:0,9:9:27:378,27,0
+ChrII	220863	.	TG	T	546.03	.	AC=2;AF=1;AN=2;DP=14;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.6;SOR=0.976	GT:AD:DP:GQ:PL	1/1:0,14:14:42:560,42,0
+ChrII	220911	.	G	T	391.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=27.91;SOR=2.093	GT:AD:DP:GQ:PL	1/1:0,9:9:27:405,27,0
+ChrII	220914	.	C	T	391.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.67;SOR=2.093	GT:AD:DP:GQ:PL	1/1:0,9:9:27:405,27,0
+ChrII	299554	.	G	GGAAGAGAGC	515.02	.	AC=2;AF=1;AN=2;DP=13;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=24.18;SOR=1.022	GT:AD:DP:GQ:PL	1/1:0,12:12:36:529,36,0
+ChrII	316949	.	CAA	C	44.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=0.842;DP=16;ExcessHet=0;FS=3.979;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=8.92;ReadPosRankSum=0.524;SOR=2.245	GT:AD:DP:GQ:PL	0/1:3,2:5:39:52,0,39
+ChrII	333129	.	A	C	742.06	.	AC=2;AF=1;AN=2;DP=17;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=20.82;SOR=1.371	GT:AD:DP:GQ:PL	1/1:0,17:17:51:756,51,0
+ChrII	334302	.	TA	T	231	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.87;SOR=1.179	GT:AD:DP:GQ:PL	1/1:0,8:8:24:245,24,0
+ChrII	342041	.	A	G	391.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.34;SOR=2.093	GT:AD:DP:GQ:PL	1/1:0,9:9:27:405,27,0
+ChrII	381543	.	CGTGT	C	1008.03	.	AC=2;AF=1;AN=2;DP=23;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=34.28;SOR=0.963	GT:AD:DP:GQ:PL	1/1:0,23:23:69:1022,69,0
+ChrII	381550	.	ACCCCTAACTCCGTG	A	924.03	.	AC=2;AF=1;AN=2;DP=21;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=24.26;SOR=0.99	GT:AD:DP:GQ:PL	1/1:0,21:21:63:938,63,0
+ChrII	389425	.	TC	T	436.02	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=33.46;SOR=0.693	GT:AD:DP:GQ:PL	1/1:0,10:10:30:450,30,0
+ChrII	389428	.	T	G	436.06	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.36;SOR=0.693	GT:AD:DP:GQ:PL	1/1:0,10:10:30:450,30,0
+ChrII	389429	.	CG	C	436.02	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=34.19;SOR=0.693	GT:AD:DP:GQ:PL	1/1:0,10:10:30:450,30,0
+ChrII	389457	.	A	AT	751.03	.	AC=2;AF=1;AN=2;DP=17;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=26.15;SOR=0.804	GT:AD:DP:GQ:PL	1/1:0,17:17:51:765,51,0
+ChrII	389460	.	C	T	751.06	.	AC=2;AF=1;AN=2;DP=17;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.37;SOR=0.804	GT:AD:DP:GQ:PL	1/1:0,17:17:51:765,51,0
+ChrII	407559	.	T	C	706.06	.	AC=2;AF=1;AN=2;DP=16;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=26.31;SOR=0.941	GT:AD:DP:GQ:PL	1/1:0,16:16:48:720,48,0
+ChrII	407561	.	GAA	G	706.03	.	AC=2;AF=1;AN=2;DP=16;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.88;SOR=0.941	GT:AD:DP:GQ:PL	1/1:0,16:16:48:720,48,0
+ChrII	407564	.	T	C	706.06	.	AC=2;AF=1;AN=2;DP=16;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.73;SOR=0.941	GT:AD:DP:GQ:PL	1/1:0,16:16:48:720,48,0
+ChrII	407570	.	C	T	706.06	.	AC=2;AF=1;AN=2;DP=17;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.37;SOR=0.941	GT:AD:DP:GQ:PL	1/1:0,16:16:48:720,48,0
+ChrII	407571	.	A	G	706.06	.	AC=2;AF=1;AN=2;DP=17;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.14;SOR=0.941	GT:AD:DP:GQ:PL	1/1:0,16:16:48:720,48,0
+ChrII	415782	.	C	T	168.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=-1.29;DP=12;ExcessHet=0;FS=18.195;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=14.05;ReadPosRankSum=-1.248;SOR=3.586	GT:AD:DP:GQ:PL	0/1:7,5:12:99:176,0,279
+ChrII	415788	.	C	T	136.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=-2;DP=12;ExcessHet=0;FS=19.956;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=11.39;ReadPosRankSum=-2.609;SOR=3.221	GT:AD:DP:GQ:PL	0/1:8,4:12:99:144,0,319
+ChrII	415789	.	A	T	136.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=-1.807;DP=12;ExcessHet=0;FS=19.956;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=11.39;ReadPosRankSum=-1.922;SOR=3.221	GT:AD:DP:GQ:PL	0/1:8,4:12:99:144,0,319
+ChrII	420372	.	T	TGTAGTAGTAGTA	792.03	.	AC=2;AF=1;AN=2;DP=35;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.19;SOR=1.493	GT:AD:DP:GQ:PL	1/1:0,18:18:52:806,52,0
+ChrII	429839	.	T	C	33.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=0.205;DP=28;ExcessHet=0;FS=2.755;MLEAC=1;MLEAF=0.5;MQ=56.9;MQRankSum=-3.779;QD=1.2;ReadPosRankSum=0.806;SOR=1.877	GT:AD:DP:GQ:PL	0/1:25,3:28:41:41,0,1026
+ChrII	429840	.	C	T	33.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=0.294;DP=28;ExcessHet=0;FS=2.755;MLEAC=1;MLEAF=0.5;MQ=56.9;MQRankSum=-3.779;QD=1.2;ReadPosRankSum=2.074;SOR=1.877	GT:AD:DP:GQ:PL	0/1:25,3:28:41:41,0,1026
+ChrII	434300	.	CA	C	44.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=1.036;DP=22;ExcessHet=0;FS=2.622;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=2.48;ReadPosRankSum=-1.096;SOR=0.148	GT:AD:DP:GQ:PL	0/1:14,4:18:52:52,0,312
+ChrII	452435	.	CT	C	66.1	.	AC=2;AF=1;AN=2;DP=14;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=16.52;SOR=0.693	GT:AD:DP:GQ:PL	1/1:0,4:4:12:80,12,0
+ChrII	455272	.	ATGCCACAGCAACAGCAGCTGCAACAAGGTGTAG	A	1143.03	.	AC=2;AF=1;AN=2;DP=33;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=33.76;SOR=4.255	GT:AD:DP:GQ:PL	1/1:0,26:26:81:1157,81,0
+ChrII	456732	.	A	AT	1145.03	.	AC=2;AF=1;AN=2;DP=26;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=26.04;SOR=0.846	GT:AD:DP:GQ:PL	1/1:0,26:26:78:1159,78,0
+ChrII	456733	.	C	CGCAAT	1145.03	.	AC=2;AF=1;AN=2;DP=26;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=33.8;SOR=0.846	GT:AD:DP:GQ:PL	1/1:0,26:26:78:1159,78,0
+ChrII	464019	.	CTGTTGTTGTTGTTGTTGTTGT	C	1179.03	.	AC=2;AF=1;AN=2;DP=28;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=24.41;SOR=1.179	GT:AD:DP:GQ:PL	1/1:0,28:28:84:1193,84,0
+ChrII	464160	.	A	ATGTGCTTGTGCT	794.03	.	AC=2;AF=1;AN=2;DP=25;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=26.98;SOR=0.914	GT:AD:DP:GQ:PL	1/1:0,18:18:53:808,53,0
+ChrII	492950	.	GA	G	94.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=1.2;DP=20;ExcessHet=0;FS=5.332;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=7.88;ReadPosRankSum=0.269;SOR=0.544	GT:AD:DP:GQ:PL	0/1:5,7:12:68:102,0,68
+ChrII	501525	.	ACC	A	1111.03	.	AC=2;AF=1;AN=2;DP=27;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.8;SOR=1.358	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1125,75,0
+ChrII	501527	.	C	CAAAA	1111.03	.	AC=2;AF=1;AN=2;DP=25;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=25.01;SOR=1.358	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1125,75,0
+ChrII	529459	.	C	T	247.02	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.55;SOR=2.584	GT:AD:DP:GQ:PL	1/1:0,7:7:21:261,21,0
+ChrII	535224	.	A	G	751.06	.	AC=2;AF=1;AN=2;DP=17;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.67;SOR=2.712	GT:AD:DP:GQ:PL	1/1:0,17:17:51:765,51,0
+ChrII	537349	.	C	CTTTCAG	657.03	.	AC=2;AF=1;AN=2;DP=16;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=32.8;SOR=0.818	GT:AD:DP:GQ:PL	1/1:0,15:15:45:671,45,0
+ChrII	537354	.	A	AATGGACCCCGAATATTTAATTTTGAAC	796.03	.	AC=2;AF=1;AN=2;DP=19;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.34;SOR=1.179	GT:AD:DP:GQ:PL	1/1:0,18:18:54:810,54,0
+ChrII	538919	.	A	C	351.05	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=28.14;SOR=0.892	GT:AD:DP:GQ:PL	1/1:0,9:9:27:365,27,0
+ChrII	541068	.	TC	T	661.03	.	AC=2;AF=1;AN=2;DP=15;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.36;SOR=1.112	GT:AD:DP:GQ:PL	1/1:0,15:15:45:675,45,0
+ChrII	558866	.	C	G	366.05	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=29.41;SOR=0.892	GT:AD:DP:GQ:PL	1/1:0,9:9:27:380,27,0
+ChrII	563135	.	G	A	695.06	.	AC=2;AF=1;AN=2;DP=17;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=23.92;SOR=1.244	GT:AD:DP:GQ:PL	1/1:0,16:16:48:709,48,0
+ChrII	614432	.	T	G	767.06	.	AC=2;AF=1;AN=2;DP=18;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.96;SOR=0.914	GT:AD:DP:GQ:PL	1/1:0,18:18:54:781,54,0
+ChrII	643489	.	G	T	610.06	.	AC=2;AF=1;AN=2;DP=21;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=26.06;SOR=2.303	GT:AD:DP:GQ:PL	1/1:0,14:14:39:624,39,0
+ChrII	643491	.	T	TTATGGAGTAATATCTATTCCCTTTCGTGGATTCCAA	616.03	.	AC=2;AF=1;AN=2;DP=14;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=27.41;SOR=2.303	GT:AD:DP:GQ:PL	1/1:0,14:14:42:630,42,0
+ChrII	653239	.	G	A	1111.06	.	AC=2;AF=1;AN=2;DP=25;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=26.47;SOR=2.215	GT:AD:DP:GQ:PL	1/1:0,25:25:75:1125,75,0
+ChrII	673311	.	G	A	338.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.38;SOR=1.402	GT:AD:DP:GQ:PL	1/1:0,9:9:27:352,27,0
+ChrII	694728	.	G	A	324.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.87;SOR=1.402	GT:AD:DP:GQ:PL	1/1:0,9:9:27:338,27,0
+ChrII	698075	.	GA	G	150.6	.	AC=1;AF=0.5;AN=2;BaseQRankSum=-0.051;DP=27;ExcessHet=0;FS=4.598;MLEAC=1;MLEAF=0.5;MQ=60;MQRankSum=0;QD=7.53;ReadPosRankSum=1.501;SOR=1.255	GT:AD:DP:GQ:PL	0/1:8,12:20:84:158,0,84
+ChrII	700335	.	C	CATATATATAT	242.93	.	AC=2;AF=1;AN=2;DP=11;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=30.35;SOR=1.329	GT:AD:DP:GQ:PL	1/1:0,6:6:18:257,18,0
+ChrII	790998	.	T	G	350.05	.	AC=2;AF=1;AN=2;DP=10;ExcessHet=0;FS=0;MLEAC=2;MLEAF=1;MQ=60;QD=31.72;SOR=0.892	GT:AD:DP:GQ:PL	1/1:0,9:9:27:364,27,0
+ChrII	810077	.	T	C	44.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=1.568;DP=55;ExcessHet=0;FS=26.663;MLEAC=1;MLEAF=0.5;MQ=50.96;MQRankSum=-2.504;QD=0.84;ReadPosRankSum=1.113;SOR=3.587	GT:AD:DP:GQ:PL	0/1:48,5:53:52:52,0,1613
+ChrII	810610	.	C	T	125.64	.	AC=1;AF=0.5;AN=2;BaseQRankSum=-0.204;DP=11;ExcessHet=0;FS=0;MLEAC=1;MLEAF=0.5;MQ=39.2;MQRankSum=-0.842;QD=12.56;ReadPosRankSum=-1.368;SOR=0.412	GT:AD:DP:GQ:PL	0/1:6,4:10:99:133,0,240

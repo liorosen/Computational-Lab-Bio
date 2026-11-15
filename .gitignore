@@ -1,0 +1,30 @@
+# Sequencing data
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.sam
+*.bam
+*.bai
+
+# Reference genomes and indexes
+*.fsa
+*.fasta
+*.fai
+*.amb
+*.ann
+*.bwt
+*.pac
+*.sa
+
+# Temporary archives
+*.zip
+# NGS sequencing and alignment data
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.sam
+*.bam
+*.bai
+HW5/IGV_files.zip

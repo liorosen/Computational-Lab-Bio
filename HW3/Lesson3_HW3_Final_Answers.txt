@@ -62,15 +62,9 @@ Per sequence quality scores: PASS
 Other reported modules also passed.
 
 Answer:
-The suspicious plot is "Per base sequence content" (FAIL in both R1 and R2). 
-The proportions of A, C, G and T are strongly biased near the beginnings of the reads. 
-This may reflect sequence-composition bias introduced during Nextera library preparation rather than low base-call quality. 
-Additionally, "Adapter Content" raises a WARNING in both raw files, suggesting some adapter contamination to address during preprocessing.
+The suspicious plot is "Per base sequence content" (FAIL in both R1 and R2). The proportions of A, C, G and T are strongly biased near the beginnings of the reads. This may reflect sequence-composition bias introduced during Nextera library preparation rather than low base-call quality. Additionally, "Adapter Content" raises a WARNING in both raw files, suggesting some adapter contamination to address during preprocessing.
 
-The overall FastQC status patterns of R1 and R2 are similar. 
-Both pass the per-base quality test, although R2 has somewhat lower quality toward the 3' end compared with R1.
-The main anomalies occur in both files.
-
+The overall FastQC status patterns of R1 and R2 are similar. Both pass the per-base quality test, although R2 has somewhat lower quality toward the 3' end compared with R1. The main anomalies occur in both files.
 
 Q4. TRIMMOMATIC COMMAND, PARAMETER CHOICES, AND CLEANUP EVALUATION
 
@@ -122,13 +116,7 @@ Cleaned read statistics from FastQC:
 2P: 1,573,637 reads, read length range 36-101 bp, mean length ~99 bp, 38% GC.
 
 Answer:
-The cleanup was satisfactory for downstream analysis. 
-88.30% of the input pairs survived as intact paired reads. 
-The adapter-content warning disappeared in both cleaned files (WARNING to PASS), 
-while per-base sequencing quality remained PASS. 
-Sequence Length Distribution now gives a WARNING because trimming created reads of variable length (36-101 bp), which is expected. 
-The Per base sequence content FAIL persists, consistent with an underlying library-preparation-related nucleotide bias that quality/adapter trimming does not necessarily remove. 
-On these results, there is no clear need to rerun Trimmomatic with more aggressive settings solely to eliminate that composition warning.
+The cleanup was satisfactory for downstream analysis. 88.30% of the input pairs survived as intact paired reads. The adapter-content warning disappeared in both cleaned files (WARNING to PASS), while per-base sequencing quality remained PASS. Sequence Length Distribution now gives a WARNING because trimming created reads of variable length (36-101 bp), which is expected. The Per base sequence content FAIL persists, consistent with an underlying library-preparation-related nucleotide bias that quality/adapter trimming does not necessarily remove. On these results, there is no clear need to rerun Trimmomatic with more aggressive settings solely to eliminate that composition warning.
 
 Q5. SEQUENCING DEPTH AFTER CLEANUP
 

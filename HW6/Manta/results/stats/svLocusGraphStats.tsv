@@ -1,0 +1,84 @@
+GraphBuildTime	0.0034h wall, 0.0016h user + 0.0000h system = 0.0016h CPU (46.18%)
+GraphMergeTime	0.0000h wall, 0.0000h user + 0.0000h system = 0.0000h CPU (0.00%)
+disjointSubgraphs	958
+nodes	1085
+directedEdges	1205
+selfEdges	951
+totalGraphEvidence	39087
+totalCleaned	7505
+highestSearchCount	40
+isMaxSearchCount	0
+highestSearchDensity	0.125
+isMaxSearchDensity	0
+
+[Sample0]
+Source	/workspaces/Computational-Lab-Bio/HW6/SRR1569760_vs_S288C.HQ.sort.bam
+MinMapqFiltered	0	0.0000
+NotFiltered	2599750	1.0000
+NotFilteredAndIgnored	2570547	0.9888
+NotFilteredAndAnomalousPair	15207	0.0058
+NotFilteredAndAnomalousPairRemotes	0	0.0000
+NotFilteredAndSplitRead	2543	0.0010
+NotFilteredAndSplitReadInAnomalousPair	37	0.0000
+NotFilteredAndSplitReadSupplementarySegments	1613	N/A
+NotFilteredAndLargeIndel	3447	0.0013
+NotFilteredAndSemiAligned	8128	0.0031
+EvidenceType_pair	0	0.0000
+EvidenceType_local_pair	194	0.0124
+EvidenceType_cigar	3468	0.2213
+EvidenceType_softclip	0	0.0000
+EvidenceType_semialign	8695	0.5550
+EvidenceType_shadow	0	0.0000
+EvidenceType_split_align	3311	0.2113
+EvidenceType_unknown	0	0.0000
+ClosePairs	194
+
+NodeRegionSizequantile:
+0.25	40
+0.5	46
+0.75	61
+0.9	77
+0.95	90
+0.99	147
+NodeEdgeCount:
+0	0
+1	976
+2	101
+3	5
+4	3
+5	0
+6	0
+7	0
+8	0
+9+	0
+NodeObservationCount:
+0	3
+1	0
+2	0
+3	0
+4	0
+5	0
+6	0
+7	0
+8	0
+9	183
+10	0
+11	0
+12	116
+13	0
+14	0
+15	71
+16	0
+17	0
+18	79
+19	0
+20	0
+21	50
+22	0
+23	0
+24	59
+25	0
+26	0
+27	41
+28	0
+29+	483

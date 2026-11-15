@@ -1,0 +1,92 @@
+Lesson 5 — Short-Read Mapping with BWA
+Answers based on the RM11-to-S288C alignment results
+
+SAM FILE INSPECTION AND FLAG INTERPRETATION
+
+The RM11 paired-end reads were mapped to the S288C reference genome using BWA-MEM. The resulting SAM file contains alignment information such as read name (QNAME), alignment flag (FLAG), reference chromosome (RNAME), position (POS), mapping quality (MAPQ), CIGAR string, mate position, template length, sequence, and base-quality scores.
+
+Examples of SAM flags observed in the alignment:
+- FLAG 99: First read of a properly paired alignment, mapped to the forward strand; its mate is on the reverse strand.
+- FLAG 147: Second read of a properly paired alignment, mapped to the reverse strand; its mate is on the forward strand.
+- FLAG 83: First read of a properly paired alignment, mapped to the reverse strand; its mate is on the forward strand.
+- FLAG 163: Second read of a properly paired alignment, mapped to the forward strand; its mate is on the reverse strand.
+
+A read can be flagged as properly paired even if its MAPQ is 0. The proper-pair flag describes paired-end mapping configuration, whereas MAPQ reflects confidence in the alignment location.
+
+Q1. What fraction of the input reads was mapped in a proper pair?
+
+Of 3,564,360 primary input reads, 3,505,452 were reported as properly paired by samtools flagstat.
+
+Fraction = 3,505,452 / 3,564,360 = 0.98347, or 98.35%.
+
+Answer: 98.35% of the input reads were mapped in proper pairs.
+
+Q2. What fraction of the input reads was mapped in a proper pair with MAPQ >= 30?
+
+3,030,068 primary reads met both the proper-pair criterion and MAPQ >= 30.
+
+Fraction = 3,030,068 / 3,564,360 = 0.85010, or 85.01%.
+
+Answer: 85.01% of the input reads were properly paired with MAPQ >= 30. A MAPQ threshold of 30 was selected to retain relatively high-confidence alignments.
+
+The count was obtained with:
+samtools view -c -f 2 -F 2048 -q 30 RM11.sam
+
+The -F 2048 option was used for calculating the read fraction to avoid counting supplementary alignments as additional input reads. The BAM filtering command used for the exercise was:
+samtools view -b -h -f 2 -q 30 RM11.sam > RM11_filtered.bam
+
+BAM PROCESSING
+
+The filtered BAM file was sorted and indexed:
+samtools sort RM11_filtered.bam -o RM11_filtered_sorted.bam
+samtools index RM11_filtered_sorted.bam
+
+Statistics were generated using:
+samtools stats RM11_filtered_sorted.bam > RM11_filtered_stats.txt
+
+Q3. How many pairs mapped to different chromosomes in the filtered and unfiltered BAM files?
+
+Filtered BAM (proper pair and MAPQ >= 30): 0 pairs mapped to different chromosomes.
+Unfiltered BAM (all alignments, without these filters): 5,668 pairs mapped to different chromosomes.
+
+The unfiltered BAM contains discordant pairs, including pairs whose mates map to different chromosomes. Such pairs do not satisfy BWA's proper-pair designation, explaining their absence from the filtered BAM.
+
+IGV — AVERAGE COVERAGE DEPTH (labeled Q2 again in the exercise)
+
+The filtered, sorted, indexed BAM was inspected in IGV against the S288C reference. In the region ChrIII:77,000-79,000, nine manually sampled coverage values were 27, 39, 44, 54, 43, 35, 30, 31, and 27 reads, giving a sampled mean of 36.67x.
+
+Because a small number of selected positions may give a biased estimate, the mean depth was also computed across all 2,001 positions in that region, including zero-coverage positions:
+
+samtools depth -aa -r ChrIII:77000-79000 RM11_filtered_sorted.bam | awk '{sum+=$3; n++} END {printf "Average depth: %.2fx\n", sum/n}'
+
+Result: 30.28x.
+
+Answer: The average sequencing depth across the inspected ChrIII:77,000-79,000 region was 30.28x. This is a regional mean, not a measured genome-wide average.
+
+IGV DISPLAY MODES
+
+The alignment track was examined in collapsed, squished, expanded, and paired-read views. In 'View as pairs', reads belonging to the same DNA fragment are displayed together, helping to identify unusual insert sizes and pair configurations.
+
+Q5. Why are some reads colored blue and red in IGV?
+
+With IGV set to color alignments by insert size, red and blue indicate read pairs with insert sizes outside the expected range. Red represents a larger-than-expected insert size, which can be consistent with a deletion relative to the reference. Blue represents a smaller-than-expected insert size, which can be consistent with an insertion relative to the reference. These colors suggest possible structural variation or mapping anomalies but are not conclusive evidence on their own.
+
+BONUS Q6. How can sequencing errors be distinguished from real SNPs?
+
+Suspected sequencing error — ChrIII:77,362:
+- Reference base: G.
+- Coverage: 37 reads.
+- G: 36 reads (97%).
+- T: 1 read (3%), on the forward strand only.
+
+The isolated G-to-T mismatch has minimal support and is more consistent with a possible sequencing error than with a genuine SNP. The observation alone does not prove the cause.
+
+Candidate SNP — ChrIII:77,505:
+- Reference base: A, confirmed with samtools faidx.
+- Coverage: 44 reads.
+- G: 44 reads (100%).
+- Strand support: 22 forward and 22 reverse reads.
+
+The consistent A-to-G difference, supported by all 44 reads on both strands, is strong evidence for a candidate SNP in RM11 relative to S288C. It has not been independently confirmed by variant calling.
+
+Conclusion: A suspected sequencing error often appears in only one or a few reads, sometimes with low base quality or strand imbalance. A candidate SNP is more convincing when the same difference is supported by many independent, high-quality reads on both strands. Additional variant-calling and quality checks are needed for confirmation.
