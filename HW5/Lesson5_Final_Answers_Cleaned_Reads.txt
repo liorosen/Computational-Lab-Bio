@@ -1,0 +1,77 @@
+Lesson 5 – Read Mapping and Alignment Analysis
+Final Answers (using cleaned paired-end reads from Lesson 3)
+
+Input reads:
+  SRR1569760_1P.fastq.gz
+  SRR1569760_2P.fastq.gz
+Reference genome:
+  S288C_reference_sequence_R64-2-1_20150113.fsa
+Alignment file:
+  RM11_clean.sam
+Filtered, sorted alignment:
+  RM11_clean_filtered_sorted.bam
+
+Q1. What percentage of reads are properly paired?
+Answer: 98.57% (3,102,384 out of 3,147,274 primary reads).
+This value was obtained using samtools flagstat on RM11_clean.sam.
+
+Q2. What percentage of reads are properly paired with MAPQ >= 30?
+Answer: 85.37% (2,686,798 out of 3,147,274 primary reads).
+The numerator was obtained using:
+  samtools view -c -f 2 -F 2048 -q 30 RM11_clean.sam
+Here, -f 2 requires proper pairing, -F 2048 excludes supplementary alignments,
+and -q 30 requires a mapping quality of at least 30.
+
+Q3. How many read pairs map to different chromosomes, before and after filtering?
+Before filtering: 4,163 read pairs.
+After filtering for proper pairing and MAPQ >= 30: 0 read pairs.
+These counts were reported by samtools stats. The reduction is expected
+because the proper-pair criterion excludes discordant pairs whose mates
+map to different chromosomes in this alignment.
+
+Q4. What is the average sequencing depth?
+The mean coverage across ChrIII:77,000-79,000 was 27.33x after filtering.
+It was calculated from all 2,001 positions in this region, including
+zero-coverage positions, using:
+  samtools depth -aa -r ChrIII:77000-79000 RM11_clean_filtered_sorted.bam | awk '{sum+=$3; n++} END {printf "Average depth: %.2fx\n",sum/n}'
+Note: 27.33x is the average depth for this selected region, NOT the
+average depth across the whole yeast genome.
+
+Q5. What do red and blue read pairs indicate in IGV when colored by insert size?
+When alignments are colored by insert size, red indicates a larger-than-
+expected insert size, while blue indicates a smaller-than-expected insert
+size. These patterns may suggest structural differences, such as deletions
+or insertions relative to the reference, but do not prove a variant on
+their own.
+
+BONUS Q6. How can sequencing errors be distinguished from real SNPs?
+Two sites were examined in IGV using the filtered BAM generated from
+the cleaned reads:
+
+(a) Possible sequencing error – ChrIII:77,362
+The reference base is G. Of 34 reads covering this position, 33 (97%)
+contain G and only one (3%) contains T. The T is supported by just one
+forward-strand read and no reverse-strand reads. This isolated mismatch
+is more consistent with a sequencing error than with a genuine SNP.
+
+(b) Candidate SNP – ChrIII:77,505
+The S288C reference base is A (confirmed with samtools faidx), but all
+40 covering reads (100%) contain G: 20 forward-strand and 20 reverse-
+strand reads. This consistent A-to-G difference strongly supports a
+candidate SNP in RM11 relative to S288C.
+
+Conclusion:
+Sequencing errors generally appear as isolated mismatches supported by
+very few reads. Genuine SNP candidates show consistent support across
+many reads, preferably from both strands. Read quality, mapping quality,
+and formal variant calling should also be checked for confirmation.
+
+Summary of results:
+  Q1 Properly paired:                         98.57%
+  Q2 Properly paired, MAPQ >= 30:             85.37%
+  Q3 Different chromosomes, unfiltered:       4,163 pairs
+  Q3 Different chromosomes, filtered:         0 pairs
+  Q4 Mean depth (ChrIII:77,000-79,000):       27.33x
+  Q5 IGV red/blue:                            Larger/smaller insert size
+  Q6 Error candidate:                         ChrIII:77,362 (G -> T, 1/34)
+  Q6 SNP candidate:                           ChrIII:77,505 (A -> G, 40/40)
