@@ -1,0 +1,278 @@
+LESSON 6 - VARIANT CALLING: VERIFIED ANSWERS
+============================================
+Sample: RM11 wine yeast (SRR1569760)
+Reference: S288C R64-2-1
+Input BAM: SRR1569760_vs_S288C.HQ.sort.bam
+Short-variant analysis: ChrII (813,184 bp)
+Tools: samtools, bcftools 1.25, Manta 1.6, GATK 4, IGV
+
+The numerical results below were checked against terminal output from the
+actual HW6 files. Statements describing IGV read appearance still require
+visual confirmation in IGV; VCF records alone cannot prove how the reads look.
+
+PART I - SHORT VARIANT CALLING WITH BCFTOOLS
+--------------------------------------------
+
+Reference indexing - What does it mean to index a FASTA file?
+
+Command:
+  samtools faidx S288C_reference_sequence_R64-2-1_20150113.fasta
+
+Answer:
+  Indexing a FASTA file creates a .fai file containing each reference
+  sequence's name, length, byte offset, number of bases per line, and
+  number of bytes per line. This permits rapid access to particular genomic
+  regions without scanning the whole FASTA file.
+
+Variant-calling commands (as used for the assignment):
+  bcftools mpileup -f S288C_reference_sequence_R64-2-1_20150113.fasta \
+      -r ChrII -Ov -o ChrII.mpileup.vcf SRR1569760_vs_S288C.HQ.sort.bam
+  bcftools call -mv -Ov -o ChrII.calls.vcf ChrII.mpileup.vcf
+
+Q1. Identify three candidate variants and explain their types.
+
+  1. ChrII:36,830 - SNP, A > G.
+     The reference allele is A and the called alternative allele is G.
+     The VCF shows DP=41, QUAL=225.417, GT=1/1, and AD=0,38. This is strong
+     sequence-level support for an alternative homozygous call.
+
+  2. ChrII:35,769 - 11-bp deletion.
+     REF=AATTATCCAATTA; ALT=AA. The net length difference is 11 bp.
+     The VCF shows QUAL=228.291, DP=13, GT=1/1, and AD=2,9.
+     On IGV, a real deletion should show consistent gaps in multiple reads
+     at the same position; verify this appearance in the BAM track.
+
+  3. ChrII:169,899 - 11-bp insertion.
+     REF=CAG; ALT=CAGAGGATACTAAG. The net length difference is 11 bp.
+     The VCF shows QUAL=228.314, DP=20, GT=1/1, and AD=3,17.
+     On IGV, an insertion should appear as a consistent insertion marker
+     in several reads; verify the appearance in the BAM track.
+
+  Rationale: multiple reads supporting the same change, high mapping/base
+  quality and consistent alignment patterns make these candidate variants
+  more credible than isolated sequencing errors. The descriptions of read
+  appearance should be supported by IGV inspection or screenshots.
+
+Q2. How many variants were detected on ChrII?
+
+  Total: 4,254 variants
+  SNPs: 3,958
+  Indels: 296
+
+  Verification commands:
+    bcftools view -H ChrII.calls.vcf | wc -l
+    bcftools view -H -v snps ChrII.calls.vcf | wc -l
+    bcftools view -H -v indels ChrII.calls.vcf | wc -l
+
+Q3. Were the three expected variants detected?
+
+  Yes. All three positions have corresponding VCF calls:
+
+  ChrII:36,830   A > G                           QUAL=225.417  DP=41  GT=1/1
+  ChrII:35,769   AATTATCCAATTA > AA              QUAL=228.291  DP=13  GT=1/1
+  ChrII:169,899  CAG > CAGAGGATACTAAG            QUAL=228.314  DP=20  GT=1/1
+
+  Thus the predicted variant types agree with the automated calls.
+  Confirm in IGV that the underlying read alignments support each call.
+
+  To inspect positions in the uncompressed VCF (use -t, not -r):
+    for pos in 36830 35769 169899; do
+      bcftools view -H -t "ChrII:$pos-$pos" ChrII.calls.vcf
+    done
+
+Q4. How many variants remain after filtering? What is their average
+    frequency, and are they evenly distributed?
+
+  Filter: QUAL >= 30 and INFO/DP >= 10
+
+  Command:
+    bcftools view -i 'QUAL>=30 & INFO/DP>=10' \
+      ChrII.calls.vcf -Ov -o ChrII.HQ.vcf
+
+  Results:
+    Variants remaining: 4,093
+    SNPs: 3,813
+    Indels: 280
+    Variants removed: 161
+    ChrII length: 813,184 bp
+
+  Mean variant frequency:
+    4,093 / 813,184 = 0.0050333 variants/bp
+    Approximately 5.03 variants/kb, or 1 variant per 198.7 bp.
+
+  The variants are not evenly distributed along ChrII. Counts by 50-kb bin:
+    0-50 kb       72          450-500 kb     337
+    50-100 kb     85          500-550 kb     416
+    100-150 kb   237          550-600 kb     377
+    150-200 kb   378          600-650 kb     359
+    200-250 kb   251          650-700 kb     290
+    250-300 kb   133          700-750 kb      80
+    300-350 kb   246          750-800 kb     152
+    350-400 kb   318          800-813.184 kb  44
+    400-450 kb   318
+
+  The density varies from about 1.44 variants/kb (0-50 kb) to 8.32
+  variants/kb (500-550 kb), showing substantial regional variation.
+  Possible explanations include different levels of divergence between
+  the two strains and regions with poor or absent read coverage.
+  Large deletions may account for some coverage gaps; identifying them
+  specifically as Ty retrotransposons would require further annotation.
+
+PART II - STRUCTURAL VARIANT CALLING WITH MANTA
+-----------------------------------------------
+
+Configuration and execution:
+  configManta.py --bam SRR1569760_vs_S288C.HQ.sort.bam \
+    --referenceFasta S288C_reference_sequence_R64-2-1_20150113.fasta \
+    --runDir Manta
+  ./Manta/runWorkflow.py -j 4
+
+Main output: Manta/results/variants/diploidSV.vcf.gz
+
+Q5. How many structural variants were found?
+
+  Genome-wide SV records: 101
+  Genome-wide deletions (SVTYPE=DEL): 88
+  SV records on ChrII: 6
+  Of these 6 ChrII calls: 5 deletions and 1 insertion.
+  Of the 101 genome-wide calls, 62 are marked FILTER=PASS.
+
+  All ChrII calls, as verified from Manta's VCF:
+    ChrII:9,087-9,424       DEL   PASS           SR alt=15  PR alt=2
+    ChrII:35,845-36,221     DEL   PASS           SR alt=12  PR alt=3
+    ChrII:221,031-226,952   DEL   NoPairSupport  SR alt=11  PR alt=0
+    ChrII:259,571-265,493   DEL   NoPairSupport  SR alt=9   PR alt=0
+    ChrII:363,846           INS   PASS           SR alt=14  PR alt=0
+    ChrII:643,488-643,866   DEL   PASS           SR alt=22  PR alt=12
+
+  Verification commands:
+    bcftools view -H Manta/results/variants/diploidSV.vcf.gz | wc -l
+    bcftools view -H Manta/results/variants/diploidSV.vcf.gz \
+      | awk '$1=="ChrII"' | wc -l
+    bcftools query -f '%INFO/SVTYPE\n' \
+      Manta/results/variants/diploidSV.vcf.gz | grep -cx DEL
+
+Q6. Choose an SV. Does the read mapping support it?
+
+  Region: ChrII:643488-643866
+  Type: deletion (SVTYPE=DEL)
+  Reported SV length: 378 bp (Manta coordinate/length convention)
+  FILTER: PASS
+  GT: 1/1
+  Manta split-read support: SR=0,22 (22 ALT-supporting reads)
+  Manta paired-read support: PR=0,12 (12 ALT-supporting pairs)
+
+  Answer:
+    This deletion is supported by Manta's split-read and paired-read
+    evidence, with 22 alternative-supporting split reads and 12
+    alternative-supporting read pairs, and it passes Manta's filters.
+    A deletion of this type is expected to show a drop in read coverage
+    across the deleted segment and/or anomalous read-pair spacing or
+    split-read alignments near the breakpoints. These visual patterns
+    must be inspected directly in IGV before claiming that they were
+    observed. The SR/PR fields alone do not establish the exact visual
+    arrangement or coverage depth in IGV.
+
+PART III - VARIANT CALLING WITH GATK
+------------------------------------
+
+BAM preparation (read groups):
+  gatk AddOrReplaceReadGroups \
+    -I SRR1569760_vs_S288C.HQ.sort.bam \
+    -O SRR1569760_vs_S288C.HQ.sort.RG.bam \
+    -LB READS -PL ILLUMINA -PU 1 -SM SRR1569760 \
+    --CREATE_INDEX true
+
+What is the purpose of the reference sequence dictionary (.dict)?
+
+  A sequence dictionary records metadata for the reference contigs,
+  including their names, lengths, order and (usually) MD5 checksums.
+  GATK uses this information to validate reference compatibility
+  with the BAM and interval definitions.
+
+Dictionary creation:
+  gatk CreateSequenceDictionary \
+    -R S288C_reference_sequence_R64-2-1_20150113.fasta \
+    -O S288C_reference_sequence_R64-2-1_20150113.dict
+
+Calling variants on ChrII:
+  gatk HaplotypeCaller \
+    -R S288C_reference_sequence_R64-2-1_20150113.fasta \
+    -I SRR1569760_vs_S288C.HQ.sort.RG.bam \
+    -O ChrII.gatk.vcf -L ChrII
+
+Q7. How many GATK variants before and after filtering?
+
+  Before filtering: 4,219 (3,890 SNPs; 329 indels)
+  After filtering: 4,131 (3,814 SNPs; 317 indels)
+  Variants removed: 88
+
+  Filter: QUAL >= 30 and INFO/DP >= 10
+
+  Commands:
+    bcftools view -H ChrII.gatk.vcf | wc -l
+    bcftools view -i 'QUAL>=30 & INFO/DP>=10' \
+      ChrII.gatk.vcf -Ov -o ChrII.gatk.HQ.vcf
+    bcftools view -H ChrII.gatk.HQ.vcf | wc -l
+
+  INFO/DP is specified explicitly because the GATK VCF also has a
+  genotype-level FORMAT/DP field.
+
+Q8. Are the bcftools and GATK results similar? Which is correct?
+
+  Yes, the results are very similar. After quality filtering:
+    bcftools: 4,093 records
+    GATK:     4,131 records
+
+  After left-alignment and splitting multiallelic records, the
+  normalized comparison yielded:
+    Shared by both callers: 4,036 records
+    Only bcftools:            69 records
+    Only GATK:              102 records
+
+  These values were independently reproduced by bcftools isec.
+  Note that normalization with '-m -any' can increase record counts by
+  splitting a multiallelic record into multiple records. Thus the
+  normalized totals (4,105 for bcftools and 4,138 for GATK) differ from
+  the original filtered VCF line counts (4,093 and 4,131).
+  About 98.3% of normalized bcftools records and 97.5% of normalized
+  GATK records are shared.
+
+  Differences may occur because bcftools uses pileup-based variant
+  calling, whereas GATK HaplotypeCaller performs local haplotype
+  assembly. Indels and repetitive regions are particularly sensitive
+  to differences in representation and calling strategy.
+
+  Neither caller can be declared correct from these data alone.
+  Resolving discordant calls would require independent validation,
+  such as a trusted RM11 assembly, long-read data or targeted sequencing.
+  IGV inspection can help assess read support but is not a definitive
+  truth set.
+
+  Optional note: The original report mentions heterozygous calls in
+  a nominally homozygous strain. These could reflect mapping errors,
+  sample biology or other artifacts; heterozygous calls should not
+  automatically be classified as errors without validation.
+
+  Comparison commands:
+    bcftools norm -f S288C_reference_sequence_R64-2-1_20150113.fasta \
+      -m -any ChrII.HQ.vcf -Oz -o bcf.norm.vcf.gz
+    bcftools index bcf.norm.vcf.gz
+    bcftools norm -f S288C_reference_sequence_R64-2-1_20150113.fasta \
+      -m -any ChrII.gatk.HQ.vcf -Oz -o gatk.norm.vcf.gz
+    bcftools index gatk.norm.vcf.gz
+    bcftools isec -p isec_check bcf.norm.vcf.gz gatk.norm.vcf.gz
+
+    bcftools view -H isec_check/0000.vcf | wc -l  # bcftools only: 69
+    bcftools view -H isec_check/0001.vcf | wc -l  # GATK only: 102
+    bcftools view -H isec_check/0002.vcf | wc -l  # shared: 4036
+
+FINAL CHECK BEFORE SUBMISSION
+-----------------------------
+* Q1/Q3: Confirm the three read-level patterns in IGV and save screenshots
+  or a saved IGV session, if required by the instructor.
+* Q6: Check the read coverage, split reads and paired-read mappings in IGV
+  at ChrII:643488-643866. Do not claim to have personally observed them
+  unless they were actually inspected.
+* All reported variant counts, window counts, Manta records and normalized
+  overlap numbers were matched to the terminal outputs provided.
